@@ -20,20 +20,32 @@ def prepare_data(path: str):
 
     scaler = StandardScaler()
 
-    for column in ["Time", "Amount"]:
-        X_train[column] = scaler.fit_transform(X_train[[column]])
-        X_test[column] = scaler.transform(X_test[[column]])
-
-    smote = SMOTE(random_state=42)
-    X_train_resampled, y_train_resampled = smote.fit_resample(
-        X_train, y_train
+    X_train[["Time", "Amount"]] = scaler.fit_transform(
+        X_train[["Time", "Amount"]]
     )
 
-    return X_train_resampled, X_test, y_train_resampled, y_test
+    X_test[["Time", "Amount"]] = scaler.transform(
+        X_test[["Time", "Amount"]]
+    )
+
+    smote = SMOTE(random_state=42)
+
+    X_train_resampled, y_train_resampled = smote.fit_resample(
+        X_train,
+        y_train
+    )
+
+    return (
+        X_train_resampled,
+        X_test,
+        y_train_resampled,
+        y_test,
+        scaler
+    )
 
 
 if __name__ == "__main__":
-    X_train, X_test, y_train, y_test = prepare_data(
+    X_train, X_test, y_train, y_test, scaler = prepare_data(
         "data/creditcard.csv"
     )
 

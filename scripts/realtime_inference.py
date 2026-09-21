@@ -3,7 +3,6 @@ import joblib
 import numpy as np
 import pandas as pd
 
-
 MODEL_PATH = "models/fraud_model.joblib"
 
 FEATURE_COLUMNS = [
@@ -18,7 +17,7 @@ def generate_transaction():
     transaction = np.random.normal(0, 1, 30)
 
     transaction[0] = np.random.uniform(0, 172800)  # Time
-    transaction[-1] = np.random.uniform(1, 1000)  # Amount
+    transaction[-1] = np.random.uniform(1, 1000)   # Amount
 
     return pd.DataFrame(
         [transaction],
@@ -27,12 +26,19 @@ def generate_transaction():
 
 
 def main():
-    model = joblib.load(MODEL_PATH)
+    artifact = joblib.load(MODEL_PATH)
+
+    model = artifact["model"]
+    scaler = artifact["scaler"]
 
     print("Real-time fraud detection started...\n")
 
     for i in range(10):
         transaction = generate_transaction()
+
+        transaction[["Time", "Amount"]] = scaler.transform(
+            transaction[["Time", "Amount"]]
+        )
 
         fraud_probability = model.predict_proba(transaction)[0][1]
 

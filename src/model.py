@@ -5,7 +5,7 @@ from preprocessing import prepare_data
 
 
 def train_model():
-    X_train, X_test, y_train, y_test = prepare_data(
+    X_train, X_test, y_train, y_test, scaler = prepare_data(
         "data/creditcard.csv"
     )
 
@@ -18,13 +18,19 @@ def train_model():
 
     model.fit(X_train, y_train)
 
-    joblib.dump(model, "models/fraud_model.joblib")
+    joblib.dump(
+        {
+            "model": model,
+            "scaler": scaler
+        },
+        "models/fraud_model.joblib"
+    )
 
-    return model, X_test, y_test
+    return model, X_test, y_test, scaler
 
 
 if __name__ == "__main__":
-    model, X_test, y_test = train_model()
+    model, X_test, y_test, scaler = train_model()
 
     print("Model trained successfully.")
     print("Test samples:", len(X_test))

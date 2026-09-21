@@ -9,7 +9,7 @@ from model import train_model
 
 
 if __name__ == "__main__":
-    model, X_test, y_test = train_model()
+    model, X_test, y_test, scaler = train_model()
 
     y_pred = model.predict(X_test)
     y_proba = model.predict_proba(X_test)[:, 1]
