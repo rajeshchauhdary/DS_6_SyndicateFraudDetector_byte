@@ -1,0 +1,18 @@
+cd /mnt/z/DS_6_SyndicateFraudDetector_byte
+python3 -c "
+content = open('requirements.txt', encoding='utf-16').read()
+lines = [l.strip() for l in content.splitlines() if l.strip()]
+with open('requirements_full.txt', 'w', encoding='utf-8', newline='\n') as f:
+f.write('\n'.join(lines) + '\n')
+"
+cat > requirements.txt << 'EOF'
+pandas==3.0.5
+numpy==2.5.3
+scikit-learn==1.9.0
+imbalanced-learn==0.14.2
+scipy==1.18.1
+joblib==1.6.0
+matplotlib==3.11.1
+seaborn==0.13.2
+jupyterlab==4.6.3
+EOF
